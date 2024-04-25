@@ -70,7 +70,7 @@ const images = [
 ];
 
 function createGallery() {
-  const gallery = document.querySelector('.gallery');
+  const galleryEl = document.querySelector('.gallery');
 
   const markup = images.reduce((acc, { preview, original, description }) => {
     return (acc += `<li class="gallery-item">
@@ -85,15 +85,14 @@ function createGallery() {
 </li>
 `);
   }, '');
+  galleryEl.insertAdjacentHTML('beforeend', markup);
 
-  gallery.insertAdjacentHTML('beforeend', markup);
-
-  gallery.addEventListener('click', event => {
-    event.preventDefault();
-    let gallery = new SimpleLightbox('.gallery a');
-    gallery.on('close.simplelightbox', function () {
-      gallery.destroy();
-    });
+  let gallery = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
+  gallery.on('close.simplelightbox', function () {
+    gallery.refresh();
   });
 }
 

@@ -4,14 +4,15 @@ const formRefs = {
   message: document.querySelector('textarea[name="message"]'),
 };
 
-const formData = {};
+const formData = { email: '', message: '' };
 
 const FEEDBACK_FORM_KEY = 'feedback-form-state';
 
 formRefs.form.addEventListener('input', event => {
   const { name, value } = event.target;
 
-  formData[name] = value.trim();
+  formData.email = formRefs.email.value;
+  formData.message = formRefs.message.value;
   localStorage.setItem(FEEDBACK_FORM_KEY, JSON.stringify(formData));
 });
 
@@ -23,9 +24,11 @@ if (localStorage.getItem(FEEDBACK_FORM_KEY)) {
 
 formRefs.form.addEventListener('submit', event => {
   event.preventDefault();
-  if (formRefs.email.value === '' || formRefs.message.value === '') {
+  if (
+    formRefs.email.value.trim() === '' ||
+    formRefs.message.value.trim() === ''
+  ) {
     alert('Please, fill in all the fields');
-    return;
   } else {
     localStorage.removeItem(FEEDBACK_FORM_KEY);
     formRefs.form.reset();
